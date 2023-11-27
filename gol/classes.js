@@ -1,6 +1,5 @@
-class Grass {
-    constructor(x, y) {
-        this.colorValue = 1
+class LivingCreature {
+    constructor(x, y,) {
         this.x = x
         this.y = y
         this.neighbours = [
@@ -14,6 +13,7 @@ class Grass {
             [this.x + 1, this.y + 1]
         ]
         this.roundCount = 0
+
     }
     findFields(symbol) {
         let found = []
@@ -26,10 +26,20 @@ class Grass {
                 if (matrix[posY][posX] == symbol) {
                     found.push(pos)
                 }
-
+                
             }
         }
         return found
+    }
+}
+
+
+
+class Grass extends LivingCreature {
+    constructor(x, y) {
+        super(x, y)
+        this.colorValue = 1
+
     }
     mul() {
         this.roundCount++
@@ -52,48 +62,21 @@ class Grass {
     }
 }
 
-class Grazer {
+class Grazer extends LivingCreature {
     constructor(x, y) {
-
-        this.x = x;
-        this.y = y;
-        //rundenzähler
+super(x, y)
+      
         this.eatCount = 0;
-        //farbe 
+      
         this.notEatCount = 0
         this.colorVal = 2;
-        // sicht Nachbar feld
-        this.neighbours = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+       
     }
 
     findFields(character) {
         this.updateDirections()
-
-        let found = []
-        //durchlaufen der nachbarfelder
-        for (let i = 0; i < this.neighbours.length; i++) {
-            let posArr = this.neighbours[i];//[x,y]
-            let x = posArr[0];
-            let y = posArr[1];
-            //schaue in der spielwelt nach ob da eine null steht
-
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == character) {
-                    //nachbarfeld ist leer
-                    found.push(posArr);
-                }
-            }
-        }
-        return found;
+return super.findFields(character)
+        
     }
     updateDirections() {
         this.neighbours = [
@@ -223,49 +206,25 @@ class Grazer {
 
 }
 
-class Predator {
+class Predator extends LivingCreature{
     constructor(x, y) {
-
+super(x,y)
         this.x = x;
         this.y = y;
         //rundenzähler
         this.eatCount = 0;
-        //farbe 
-        this.notEatCount = 0
+        this.notEatCount = 0;
         this.colorVal = 3;
         // sicht Nachbar feld
-        this.neighbours = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+      
     }
 
     findFields(character) {
         this.updateDirections()
-
-        let found = []
-        //durchlaufen der nachbarfelder
-        for (let i = 0; i < this.neighbours.length; i++) {
-            let posArr = this.neighbours[i];//[x,y]
-            let x = posArr[0];
-            let y = posArr[1];
-            //schaue in der spielwelt nach ob da eine null steht
-
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == character) {
-                    //nachbarfeld ist leer
-                    found.push(posArr);
-                }
-            }
-        }
-        return found;
+  return super.findFields(character)
     }
+        //durchlaufen der nachbarfelder
+       
     updateDirections() {
         this.neighbours = [
             [this.x - 1, this.y - 1],
