@@ -6,3 +6,12 @@ function main() {
     console.log(message + os.platform());
 }
 main();
+
+
+const Square = require("./module")
+let mySquareObject = new Square (5)
+
+function main(){
+    console.log(mySquareObject.getArea())
+}
+main;
