@@ -8,7 +8,7 @@ function main() {
 main();
 
 
-const Square = require("./module")
+const Square = require("./module.js")
 let mySquareObject = new Square (5)
 
 function main(){
