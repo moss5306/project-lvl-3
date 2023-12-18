@@ -12,9 +12,13 @@ const app = express()
 let server = require("http").Server(app);
 let io = require("socket.io")(server);
 
+let clients = []
+let isgamerunning = false
+let interValID
+
 app.use(express.static("./client"))
 
-app.get("/", function (req, res){
+app.get("/", function (req, res) {
     res.redirect("index.html")
 })
 
@@ -22,19 +26,25 @@ app.get("/", function (req, res){
 server.listen(3000, function () {
     console.log("Der server läuft auf port 3000")
     initGame();
-    setInterval(function () {
-        updateGame()
 
-    }, 1000)
+
+    io.on("connection", function (socket) {
+        console.log("ws connection established ...")
+        clients.push(socket.id)
+        if (clients.length == 1 && isgamerunning == false) {
+            console.log("starte spiel ")
+            initGame();
+            interValID = setInterval(updateGame, 1000)
+            isgamerunning = true
+        }
+        // socket.emit("matrix", matrix)
+    })
+
 });
 
 
 
 
-io.on("connection", function(socket){
-    console.log("ws connection established ...")
-    socket.emit("matrix", matrix)
-})
 
 
 //kebab
@@ -146,15 +156,17 @@ function updateGame() {
         let predatorObj = predatorArr[i];
         predatorObj.eat()
     }
-   for (let i = 0; i < mushroomArr.length; i++) {
+    for (let i = 0; i < mushroomArr.length; i++) {
         let mushObj = mushroomArr[i];
         mushObj.mul()
-    
-}
-for (let i = 0; i < supereaterArr.length; i++) {
-    let superEaterObj = supereaterArr[i];
-    superEaterObj.eat()
-}
+
+    }
+    for (let i = 0; i < supereaterArr.length; i++) {
+        let superEaterObj = supereaterArr[i];
+        superEaterObj.eat()
+    }
     console.log(matrix)
+    console.log("Send matrix to client")
+    io.sockets.emit("matrix", matrix)
 
 }

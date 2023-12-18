@@ -25,13 +25,23 @@ function draw() {
 }
 function main() {
     const socket = io();
-
+    let btnCreate = document.getElementById("button-createSth")
     console.log(" ready to display gol...")
     function gotMatrix(data) {
         console.log(data)
         matrix = data
     }
     socket.on("matrix", gotMatrix)
+   
+    function sendeCreateComment() {
+        console.log("klick mich")
+    }
+
+    btnCreate.onclick = sendeCreateComment
+
 }
 
 window.onload = main;
+
+
+
